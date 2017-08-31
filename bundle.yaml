@@ -20,7 +20,7 @@ applications:
     to:
       - "2"
   "mongodb":
-    charm: "cs:mongodb-33"
+    charm: "cs:mongodb-43"
     num_units: 1
     to:
       - "3"
@@ -30,10 +30,7 @@ applications:
     to:
       - "3"
   "storm-topology":
-    charm: "/home/sebastien/qrama/tengu-charms/charms/trusty/storm-topology"
-    num_units: 1
-    to:
-      - "1"
+    charm: "/home/sebastien/qrama/charms/trusty/storm-topology"
 relations:
   - - "worker:zookeeper"
     - "apache-zookeeper:zookeeper"
@@ -43,11 +40,11 @@ relations:
     - "apache-zookeeper:zookeeper"
   - - "kafka:zookeeper"
     - "apache-zookeeper:zookeeper"
-  - - "storm:juju-info"
-    - "storm-deployer:storm"
-  - - "storm-deployer:kafka"
+  - - "nimbus:juju-info"
+    - "storm-topology:storm"
+  - - "storm-topology:kafka"
     - "kafka:client"
-  - - "storm-deployer:db"
+  - - "storm-topology:db"
     - "mongodb:database"
 machines:
   "0":
