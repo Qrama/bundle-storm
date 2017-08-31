@@ -1,0 +1,60 @@
+applications:
+  "apache-zookeeper":
+    charm: "cs:zookeeper-33"
+    num_units: 1
+    to:
+      - "0"
+  "nimbus":
+    charm: "/home/sebastien/qrama/tengu-charms/charms/trusty/storm"
+    num_units: 1
+    options:
+      version: "1.1.1"
+    expose: true
+    to:
+      - "1"
+  "worker":
+    charm: "/home/sebastien/qrama/tengu-charms/charms/trusty/storm"
+    num_units: 1
+    options:
+      version: "1.1.1"
+    to:
+      - "2"
+  "mongodb":
+    charm: "cs:mongodb-33"
+    num_units: 1
+    to:
+      - "3"
+  "kafka":
+    charm: "cs:kafka-30"
+    num_units: 1
+    to:
+      - "3"
+  "storm-topology":
+    charm: "/home/sebastien/qrama/tengu-charms/charms/trusty/storm-topology"
+    num_units: 1
+    to:
+      - "1"
+relations:
+  - - "worker:zookeeper"
+    - "apache-zookeeper:zookeeper"
+  - - "nimbus:master"
+    - "worker:worker"
+  - - "nimbus:zookeeper"
+    - "apache-zookeeper:zookeeper"
+  - - "kafka:zookeeper"
+    - "apache-zookeeper:zookeeper"
+  - - "storm:juju-info"
+    - "storm-deployer:storm"
+  - - "storm-deployer:kafka"
+    - "kafka:client"
+  - - "storm-deployer:db"
+    - "mongodb:database"
+machines:
+  "0":
+    series: xenial
+  "1":
+    series: trusty
+  "2":
+    series: trusty
+  "3":
+    series: xenial
