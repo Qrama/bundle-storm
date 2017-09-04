@@ -5,7 +5,7 @@ applications:
     to:
       - "0"
   "nimbus":
-    charm: "/home/sebastien/qrama/tengu-charms/charms/trusty/storm"
+    charm: "/home/ubuntu/qrama-charms/trusty/storm"
     num_units: 1
     options:
       version: "1.1.1"
@@ -13,7 +13,7 @@ applications:
     to:
       - "1"
   "worker":
-    charm: "/home/sebastien/qrama/tengu-charms/charms/trusty/storm"
+    charm: "/home/ubuntu/qrama-charms/trusty/storm"
     num_units: 1
     options:
       version: "1.1.1"
@@ -32,11 +32,11 @@ applications:
     to:
       - "3"
   "storm-topology":
-    charm: "/home/sebastien/qrama/charms/trusty/storm-topology"
-  "rss-feed":
-    charm: "/home/sebastien/qrama/charms/xenial/kafka-topic"
+    charm: "/home/ubuntu/qrama-charms/trusty/storm-topology"
+  "datafeed":
+    charm: "/home/ubuntu/qrama-charms/xenial/kafka-topic"
   "tengu-db":
-    charm: "/home/sebastien/qrama/charms/xenial/mongo-database"
+    charm: "/home/ubuntu/qrama-charms/xenial/mongo-database"
 relations:
   - - "worker:zookeeper"
     - "apache-zookeeper:zookeeper"
@@ -49,12 +49,12 @@ relations:
   - - "nimbus:juju-info"
     - "storm-topology:storm"
   - - "storm-topology:topic"
-    - "rss-feed:topic"
+    - "datafeed:topic"
   - - "storm-topology:db"
     - "tengu-db:db"
   - - "tengu-db:mongodb"
     - "mongodb:database"
-  - - "rss-feed:kafka"
+  - - "datafeed:kafka"
     - "kafka:client"
 machines:
   "0":
