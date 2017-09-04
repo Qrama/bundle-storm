@@ -22,15 +22,21 @@ applications:
   "mongodb":
     charm: "cs:mongodb-43"
     num_units: 1
+    options:
+      volume-map: "{}"
     to:
       - "3"
   "kafka":
-    charm: "cs:kafka-30"
+    charm: "cs:kafka-35"
     num_units: 1
     to:
       - "3"
   "storm-topology":
     charm: "/home/sebastien/qrama/charms/trusty/storm-topology"
+  "rss-feed":
+    charm: "/home/sebastien/qrama/charms/xenial/kafka-topic"
+  "tengu-db":
+    charm: "/home/sebastien/qrama/charms/xenial/mongo-database"
 relations:
   - - "worker:zookeeper"
     - "apache-zookeeper:zookeeper"
@@ -42,10 +48,14 @@ relations:
     - "apache-zookeeper:zookeeper"
   - - "nimbus:juju-info"
     - "storm-topology:storm"
-  - - "storm-topology:kafka"
-    - "kafka:client"
+  - - "storm-topology:topic"
+    - "rss-feed:topic"
   - - "storm-topology:db"
+    - "tengu-db:db"
+  - - "tengu-db:mongodb"
     - "mongodb:database"
+  - - "rss-feed:kafka"
+    - "kafka:client"
 machines:
   "0":
     series: xenial
